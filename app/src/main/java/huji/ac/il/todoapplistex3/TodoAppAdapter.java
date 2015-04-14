@@ -2,6 +2,7 @@ package huji.ac.il.todoapplistex3;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -81,12 +83,25 @@ public class TodoAppAdapter extends ArrayAdapter<TodoItem> {
         String strParsedExpiration = m_sdfSimplifiedExpDate.format(tditmCurrItemToInsert.m_dtExpirationDate);
         TextView txtvwExpiration = (TextView) vwTodoTaskVisual.findViewById(R.id.txtvwItemDueDate);
         txtvwExpiration.setText((CharSequence)strParsedExpiration);
-        if(m_arrTodoItems.get(position).m_dtExpirationDate.before(new Date()))
+        Calendar clndrCurrDay = Calendar.getInstance();
+        clndrCurrDay.clear(Calendar.HOUR_OF_DAY);
+        clndrCurrDay.clear(Calendar.AM_PM);
+        clndrCurrDay.clear(Calendar.MINUTE);
+        clndrCurrDay.clear(Calendar.SECOND);
+        clndrCurrDay.clear(Calendar.MILLISECOND);
+        if(m_arrTodoItems.get(position).m_dtExpirationDate.before(clndrCurrDay.getTime()))
         {
             txtvwItemContent.setTextColor(android.graphics.Color.RED);
             txtvwItemContent.setBackgroundColor(android.graphics.Color.BLUE);
             txtvwExpiration.setTextColor(android.graphics.Color.RED);
             txtvwExpiration.setBackgroundColor(android.graphics.Color.BLUE);
+        }
+        else
+        {
+            txtvwItemContent.setTextColor(Color.BLACK);
+            txtvwItemContent.setBackgroundColor(Color.WHITE);
+            txtvwExpiration.setTextColor(Color.BLACK);
+            txtvwExpiration.setBackgroundColor(Color.WHITE);
         }
         return  vwTodoTaskVisual;
     }
